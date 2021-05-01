@@ -43,9 +43,9 @@ public class Solution {
 		Queue <Customer> hairdresserChair = new LinkedList<> ();
 		int currentTime = 0;
 
-		while (!arrivalsQueue.isEmpty() || !waitingRoomQueue.isEmpty() || !hairdresserChair.isEmpty())
+		while (!arrivalsQueue.isEmpty() || !waitingRoomQueue.isEmpty() || currentCustomer != null)
 		{
-			System.out.println("Time = " + currentTime);
+
 			
 			if (currentTime == 0)
 			{
@@ -60,7 +60,7 @@ public class Solution {
 				{
 					if (waitingRoomQueue.size() == 3)
 					{
-						System.out.println("Waiting room full");
+						arrivalsQueue.remove();
 					}
 					else 
 					{
@@ -75,14 +75,23 @@ public class Solution {
 					{
 						hairdresserChair.remove();
 					}
-					else 
+					else
 					{
-						currentCustomer = waitingRoomQueue.peek();
-						waitingRoomQueue.remove();
-						timeWorking = currentCustomer.getServiceTime();
+						if (waitingRoomQueue.isEmpty())
+						{
+							System.exit(0);
+						}
+						else 
+						{
+							currentCustomer = waitingRoomQueue.peek();
+							waitingRoomQueue.remove();
+							timeWorking = currentCustomer.getServiceTime();
+						}
+
 					}
 				}
 				timeWorking--;
+				System.out.println("Time = " + currentTime);
 				System.out.println("Hairdresser's chair: ");
 				System.out.println("\t " + currentCustomer.getName() + " Arrival: " + currentCustomer.getArrivalTime() + " Service Time: " + currentCustomer.getServiceTime());
 			
@@ -123,7 +132,7 @@ public class Solution {
 				}
 				
 				System.out.println("Arrivals List: ");
-				ArrayList <Customer> customerList = new ArrayList(arrivalsQueue);
+				ArrayList <Customer> customerList = new ArrayList<Customer>(arrivalsQueue);
 				for (int i = 0; i < customerList.size(); i++) 
 				{
 					System.out.println("\t " + customerList.get(i).getName() + ": arrival " + customerList.get(i).getArrivalTime() + ": service " + customerList.get(i).getServiceTime());
